@@ -1,0 +1,1 @@
+fourmolu -e --mode inplace $(find . -type d -name "dist-newstyle" -prune -o -type f -name "*.hs" -print)

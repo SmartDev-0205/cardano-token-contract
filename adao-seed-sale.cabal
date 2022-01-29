@@ -1,0 +1,71 @@
+cabal-version: 3.4
+name:          adda-seed-sale
+version:       0.1.0.0
+author:        ADADAO
+maintainer:    ADADAO
+
+flag short-epoch
+  description: Set an epoch at two slots. For testing only.
+  default:     False
+  manual:      True
+
+common lang
+  default-language: Haskell2010
+  default-extensions:
+    ImportQualifiedPost
+    NoImplicitPrelude
+  ghc-options:
+    -- -Weverything -Werror
+    -- For plutus
+    -Wno-all-missed-specialisations
+    -Wno-missing-local-signatures
+    -Wno-missing-safe-haskell-mode
+    -Wno-unsafe
+    -Wno-unused-packages
+    -- For plutus-tx
+    -fno-ignore-interface-pragmas
+    -fno-omit-interface-pragmas
+    -fobject-code
+    -fplugin-opt PlutusTx.Plugin:defer-errors
+
+library
+  import: lang
+  hs-source-dirs: src
+  exposed-modules:
+    ADADAO.Contracts.Trace
+    ADADAO.Contracts.Common
+    ADADAO.Contracts.OffChain
+    ADADAO.Contracts.OnChain
+    ADADAO.Contracts.Types
+    ADADAO.Contracts.Utils
+    ADADAO.Contracts.Token
+  build-depends:
+    , aeson
+    , base
+    , containers
+    , plutus-contract
+    , plutus-ledger
+    , plutus-ledger-constraints
+    , plutus-tx
+    , plutus-tx-plugin
+    , either
+    , lens
+    , data-default
+
+test-suite seed-sale-tests
+  import: lang
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  main-is: Test.hs
+  build-depends:
+    , base
+    , data-default
+    , plutus-contract
+    , plutus-ledger
+    , plutus-ledger-constraints
+    , tasty
+    , tasty-quickcheck
+    , plutus-tx
+    , freer-simple
+    -- ADADAO Internal
+    , ADADAO-seed-sale
